@@ -1,6 +1,10 @@
-# Amiga Game Ports
+<p align="center">
+  <img src="logo.png" alt="Amiga Game Ports" width="600">
+</p>
 
-Classic game ports to AmigaOS 3.x (68030+) via [libSDL2-amigaos3](https://github.com/bdgscotland/libSDL2-amigaos3).
+<p align="center">
+  Classic game ports to AmigaOS 3.x (68030+) via <a href="https://github.com/bdgscotland/libSDL2-amigaos3">libSDL2-amigaos3</a>.
+</p>
 
 ## Ports
 
@@ -40,8 +44,8 @@ Each port directory contains only the Amiga-specific build files:
 
 The upstream game source must be cloned separately per each port's instructions.
 
-## Planned
+## Candidates
 
-| Game | Status | Notes |
-|------|--------|-------|
-| **fheroes2** (Heroes of Might and Magic II) | Researching | C++17, needs GCC 13+ toolchain |
+See [PORT_CANDIDATES.md](PORT_CANDIDATES.md) for the full researched list of games we can port.
+
+Top picks: 1oom (Master of Orion), SDLPoP (Prince of Persia), REminiscence (Flashback), Another World.
