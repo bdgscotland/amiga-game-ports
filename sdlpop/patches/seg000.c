@@ -116,7 +116,11 @@ void pop_main() {
 
 	SDL_Log("POP: show_loading");
 	show_loading();
+	SDL_Log("POP: show_loading done, set_joy_mode");
 	set_joy_mode();
+	SDL_Log("POP: open_dat PRINCE.DAT");
+	dathandle = open_dat("PRINCE.DAT", 'G');
+	SDL_Log("POP: open_dat done, init_game_main next");
 	cheats_enabled = check_param("megahit") != NULL;
 #ifdef USE_DEBUG_CHEATS
 	debug_cheats_enabled = check_param("debug") != NULL;
@@ -130,7 +134,7 @@ void pop_main() {
 #endif
 
 	// I moved this after init_copyprot_dialog(), so open_dat() can show an error dialog if needed.
-	dathandle = open_dat("PRINCE.DAT", 'G');
+	// (already called above with logging)
 
 	if (cheats_enabled
 		#ifdef USE_REPLAY
@@ -156,6 +160,7 @@ void pop_main() {
 	init_menu();
 #endif
 
+	SDL_Log("POP: calling init_game_main");
 	init_game_main();
 }
 

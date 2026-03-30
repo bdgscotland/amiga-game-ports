@@ -2,6 +2,13 @@
 #include <string.h>
 #include <math.h>
 
+/* stb_image implementation -- compiled once here, declared extern in stub header */
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_ONLY_PNG
+#define STBI_ONLY_BMP
+#define STBI_NO_STDIO
+#include "stb_image.h"
+
 /* libnix doesn't have strnlen */
 size_t strnlen(const char *s, size_t maxlen)
 {

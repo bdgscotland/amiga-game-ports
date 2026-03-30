@@ -9,7 +9,9 @@ CFLAGS = -std=gnu99 -O2 -m68020 -noixemul \
          -Wall -Wno-unused-parameter -Wno-sign-compare \
          -I$(SDL2_ROOT)/include \
          -I$(POP_SRC) \
-         -D__AMIGAOS3__
+         -D__AMIGAOS3__ \
+         -DUSE_COMPAT_TIMER \
+         -Dfps=BASE_FPS
 
 LDFLAGS = -noixemul -m68020 \
           -L$(SDL2_ROOT) -lSDL2 \
@@ -61,6 +63,7 @@ patch-sources:
 	cp patches/sdl_image_stub.h $(POP_SRC)/sdl_image_stub.h
 	cp patches/seg000.c $(POP_SRC)/seg000.c
 	cp patches/data.h $(POP_SRC)/data.h
+	cp patches/stb_image.h $(POP_SRC)/stb_image.h
 	@echo "Built $(TARGET) ($$(wc -c < $(TARGET)) bytes)"
 
 $(TARGET): $(OBJS)
