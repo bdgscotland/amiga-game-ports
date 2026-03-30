@@ -18,6 +18,14 @@ typedef struct {
     Uint8 patch;
 } SDL_mixer_version;
 
+#define SDL_MIXER_MAJOR_VERSION 2
+#define SDL_MIXER_MINOR_VERSION 6
+#define SDL_MIXER_PATCHLEVEL    0
+#define SDL_MIXER_VERSION_ATLEAST(x, y, z) \
+    ((SDL_MIXER_MAJOR_VERSION > (x)) || \
+     (SDL_MIXER_MAJOR_VERSION == (x) && SDL_MIXER_MINOR_VERSION > (y)) || \
+     (SDL_MIXER_MAJOR_VERSION == (x) && SDL_MIXER_MINOR_VERSION == (y) && SDL_MIXER_PATCHLEVEL >= (z)))
+
 /* Audio format constants */
 #define MIX_DEFAULT_FREQUENCY 22050
 #define MIX_DEFAULT_FORMAT    AUDIO_S16SYS

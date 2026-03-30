@@ -11,7 +11,8 @@ if(NOT TARGET SDL2::SDL2)
     add_library(SDL2::SDL2 STATIC IMPORTED)
     set_target_properties(SDL2::SDL2 PROPERTIES
         IMPORTED_LOCATION "/sdl2/libSDL2.a"
-        INTERFACE_INCLUDE_DIRECTORIES "/sdl2/include"
+        INTERFACE_INCLUDE_DIRECTORIES "/sdl2/include;/sdl2/include/cxx"
+        INTERFACE_COMPILE_OPTIONS "-I/sdl2/include/cxx;-include;amiga_cxx_compat.h"
     )
 endif()
 
