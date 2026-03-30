@@ -5,9 +5,12 @@ set(SDL2_mixer_FOUND TRUE)
 set(SDL2_MIXER_FOUND TRUE)
 set(SDL2_mixer_VERSION "2.6.0")
 
-# Build the stub library
+# Build the stub library (includes POSIX stubs + stack cookie)
 if(NOT TARGET sdl2_mixer_stub)
-    add_library(sdl2_mixer_stub STATIC /amiga/sdl2_mixer_stub/SDL_mixer_stub.c)
+    add_library(sdl2_mixer_stub STATIC
+        /amiga/sdl2_mixer_stub/SDL_mixer_stub.c
+        /amiga/amiga_stubs.c
+    )
     target_include_directories(sdl2_mixer_stub PRIVATE /sdl2/include /amiga/sdl2_mixer_stub)
 endif()
 
