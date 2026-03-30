@@ -1,0 +1,72 @@
+# SDLPoP (Prince of Persia) for AmigaOS 3.x
+DOCKER_IMAGE = amigadev/crosstools:m68k-amigaos
+CC = m68k-amigaos-gcc
+
+SDL2_ROOT ?= $(HOME)/Developer/libSDL2-amigaos3
+POP_SRC   ?= $(HOME)/Developer/amiga-game-ports/sdlpop-upstream/src
+
+CFLAGS = -std=gnu99 -O2 -m68020 -noixemul \
+         -Wall -Wno-unused-parameter -Wno-sign-compare \
+         -I$(SDL2_ROOT)/include \
+         -I$(POP_SRC) \
+         -D__AMIGAOS3__
+
+LDFLAGS = -noixemul -m68020 \
+          -L$(SDL2_ROOT) -lSDL2 \
+          -ldebug -lamiga -lm -lstubs
+
+SRCS = \
+	$(POP_SRC)/main.c \
+	$(POP_SRC)/data.c \
+	$(POP_SRC)/seg000.c \
+	$(POP_SRC)/seg001.c \
+	$(POP_SRC)/seg002.c \
+	$(POP_SRC)/seg003.c \
+	$(POP_SRC)/seg004.c \
+	$(POP_SRC)/seg005.c \
+	$(POP_SRC)/seg006.c \
+	$(POP_SRC)/seg007.c \
+	$(POP_SRC)/seg008.c \
+	$(POP_SRC)/seg009.c \
+	$(POP_SRC)/seqtbl.c \
+	$(POP_SRC)/replay.c \
+	$(POP_SRC)/options.c \
+	$(POP_SRC)/lighting.c \
+	$(POP_SRC)/menu.c \
+	$(POP_SRC)/midi.c \
+	$(POP_SRC)/opl3.c \
+	$(POP_SRC)/screenshot.c \
+	$(POP_SRC)/stb_vorbis.c \
+	amiga/amiga_shims.c
+
+OBJS = $(patsubst %.c,%.o,$(SRCS))
+TARGET = prince
+
+.PHONY: sdlpop sdlpop-native clean
+
+sdlpop:
+	docker run --rm \
+		-v "$(SDL2_ROOT):/sdl2" \
+		-v "$(PWD)/..:/ports" \
+		-w /ports/sdlpop \
+		$(DOCKER_IMAGE) \
+		make -f Makefile.amiga sdlpop-native \
+			POP_SRC=/ports/sdlpop-upstream/src \
+			SDL2_ROOT=/sdl2
+
+sdlpop-native: patch-sources $(TARGET)
+
+patch-sources:
+	cp patches/types.h $(POP_SRC)/types.h
+	cp patches/sdl_image_stub.h $(POP_SRC)/sdl_image_stub.h
+	@echo "Built $(TARGET) ($$(wc -c < $(TARGET)) bytes)"
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(TARGET)
+	find . -name '*.o' -delete
