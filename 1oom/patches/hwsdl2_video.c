@@ -381,7 +381,7 @@ static void video_setpal(const uint8_t *pal, int first, int num)
         video.color[i].a = 255;
     }
     video.palette_to_set = true;
-    video_update();
+    video.update();
 }
 
 /* -------------------------------------------------------------------------- */
@@ -707,7 +707,11 @@ int hw_video_init(int w, int h)
     video.enlarge = false;
     video.last_resize_time = 0;
     video.render = video_render;
+#ifdef __AMIGAOS3__
+    video.update = video_update_amiga;
+#else
     video.update = video_update;
+#endif
     video.setpal = video_setpal;
     video.blit_rect.x = 0;
     video.blit_rect.y = 0;
