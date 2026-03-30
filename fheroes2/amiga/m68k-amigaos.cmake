@@ -16,7 +16,7 @@ set(CMAKE_C_FLAGS_INIT "-noixemul -m68030 -O0")
 # Force int32_t to be int (not long) to match code expectations.
 set(CMAKE_C_FLAGS_INIT "-noixemul -m68030 -O0 -D__INT32_TYPE__=int -D'__UINT32_TYPE__=unsigned int' -D'__INT_LEAST32_TYPE__=int' -D'__UINT_LEAST32_TYPE__=unsigned int'")
 set(CMAKE_CXX_FLAGS_INIT "-noixemul -m68030 -O0 -std=c++17 -fpermissive -D__INT32_TYPE__=int -D'__UINT32_TYPE__=unsigned int' -D'__INT_LEAST32_TYPE__=int' -D'__UINT_LEAST32_TYPE__=unsigned int'")
-set(CMAKE_EXE_LINKER_FLAGS_INIT "-noixemul")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "-noixemul -Wl,--allow-multiple-definition")
 
 # Don't try to run test executables during cmake configure
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)

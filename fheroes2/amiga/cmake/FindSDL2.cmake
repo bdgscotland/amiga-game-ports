@@ -6,13 +6,13 @@ set(SDL2_INCLUDE_DIRS "/sdl2/include")
 set(SDL2_LIBRARIES "/sdl2/libSDL2.a")
 set(SDL2_VERSION "2.28.0")
 
-# Create imported target expected by modern CMake
 if(NOT TARGET SDL2::SDL2)
     add_library(SDL2::SDL2 STATIC IMPORTED)
     set_target_properties(SDL2::SDL2 PROPERTIES
         IMPORTED_LOCATION "/sdl2/libSDL2.a"
         INTERFACE_INCLUDE_DIRECTORIES "/sdl2/include;/sdl2/include/cxx"
         INTERFACE_COMPILE_OPTIONS "-I/sdl2/include/cxx;-include;amiga_cxx_compat.h"
+        INTERFACE_LINK_LIBRARIES "atomic"
     )
 endif()
 

@@ -1,9 +1,20 @@
-/* SDL_mixer stub implementation for AmigaOS 3.x fheroes2 port.
- * All functions are no-ops. Audio initialization "succeeds" but
- * no sound is produced. Replace with real SDL2_mixer when ready. */
+/* SDL_mixer stub + AmigaOS POSIX stubs for fheroes2 port.
+ * All mixer functions are no-ops. Also provides missing POSIX
+ * functions that libstdc++ references. */
 
 #include "SDL.h"
 #include "SDL_mixer.h"
+#include <string.h>
+
+/* __xpg_strerror_r -- used by libstdc++ system_error */
+int __xpg_strerror_r(int errnum, char *buf, unsigned long buflen)
+{
+    const char *msg = strerror(errnum);
+    if (!msg) msg = "Unknown error";
+    strncpy(buf, msg, buflen);
+    if (buflen > 0) buf[buflen - 1] = '\0';
+    return 0;
+}
 
 int Mix_Init(int flags)
 {
