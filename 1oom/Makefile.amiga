@@ -1,0 +1,200 @@
+# 1oom (Master of Orion 1) for AmigaOS 3.x -- Cross-compilation via bebbo-gcc
+#
+# Usage:
+#   make -f Makefile.amiga 1oom         # Build inside Docker
+#   make -f Makefile.amiga 1oom-native  # Build with local cross-compiler
+
+DOCKER_IMAGE = amigadev/crosstools:m68k-amigaos
+CC = m68k-amigaos-gcc
+AR = m68k-amigaos-ar
+
+# Paths
+SDL2_ROOT ?= $(HOME)/Developer/libSDL2-amigaos3
+OOM_SRC   ?= $(HOME)/Developer/amiga-game-ports/1oom-upstream
+
+CFLAGS = -std=gnu99 -O2 -m68020 -noixemul \
+         -Wall -Wno-unused-parameter -Wno-sign-compare \
+         -Wno-missing-field-initializers -Wno-inline \
+         -I$(OOM_SRC)/src \
+         -I$(OOM_SRC)/src/game \
+         -I$(OOM_SRC)/src/ui/classic \
+         -I$(OOM_SRC)/src/hw/sdl \
+         -I$(OOM_SRC)/src/hw/sdl/2 \
+         -Iamiga \
+         -I$(SDL2_ROOT)/include \
+         -I$(SDL2_ROOT)/include/SDL2 \
+         -DPACKAGE=\"1oom\" \
+         -DPACKAGE_VERSION=\"1.11.8\" \
+         -D__AMIGAOS3__
+
+LDFLAGS = -noixemul -m68020 \
+          -L$(SDL2_ROOT) -lSDL2 \
+          -ldebug -lamiga -lm -lstubs
+
+# --- Core utility sources (src/) ---
+CORE_SRCS = \
+	$(OOM_SRC)/src/cfg.c \
+	$(OOM_SRC)/src/fmt_mus.c \
+	$(OOM_SRC)/src/fmt_pic.c \
+	$(OOM_SRC)/src/fmt_sfx.c \
+	$(OOM_SRC)/src/font8x8.c \
+	$(OOM_SRC)/src/font8x8_draw.c \
+	$(OOM_SRC)/src/gfxaux.c \
+	$(OOM_SRC)/src/kbd.c \
+	$(OOM_SRC)/src/lbx.c \
+	$(OOM_SRC)/src/lbxfont.c \
+	$(OOM_SRC)/src/lbxgfx.c \
+	$(OOM_SRC)/src/lbxpal.c \
+	$(OOM_SRC)/src/lib.c \
+	$(OOM_SRC)/src/log.c \
+	$(OOM_SRC)/src/main.c \
+	$(OOM_SRC)/src/menu.c \
+	$(OOM_SRC)/src/mouse.c \
+	$(OOM_SRC)/src/options.c \
+	$(OOM_SRC)/src/palette.c \
+	$(OOM_SRC)/src/pbx.c \
+	$(OOM_SRC)/src/rnd.c \
+	$(OOM_SRC)/src/util.c \
+	$(OOM_SRC)/src/util_cstr.c \
+	$(OOM_SRC)/src/util_math.c
+
+# --- Game logic (src/game/) ---
+GAME_SRCS = \
+	$(OOM_SRC)/src/game/game.c \
+	$(OOM_SRC)/src/game/game_ai.c \
+	$(OOM_SRC)/src/game/game_ai_classic.c \
+	$(OOM_SRC)/src/game/game_audience.c \
+	$(OOM_SRC)/src/game/game_aux.c \
+	$(OOM_SRC)/src/game/game_battle.c \
+	$(OOM_SRC)/src/game/game_battle_human.c \
+	$(OOM_SRC)/src/game/game_bomb.c \
+	$(OOM_SRC)/src/game/game_cheat.c \
+	$(OOM_SRC)/src/game/game_design.c \
+	$(OOM_SRC)/src/game/game_diplo.c \
+	$(OOM_SRC)/src/game/game_election.c \
+	$(OOM_SRC)/src/game/game_event.c \
+	$(OOM_SRC)/src/game/game_fleet.c \
+	$(OOM_SRC)/src/game/game_ground.c \
+	$(OOM_SRC)/src/game/game_misc.c \
+	$(OOM_SRC)/src/game/game_nebula.c \
+	$(OOM_SRC)/src/game/game_new.c \
+	$(OOM_SRC)/src/game/game_news.c \
+	$(OOM_SRC)/src/game/game_num.c \
+	$(OOM_SRC)/src/game/game_nump.c \
+	$(OOM_SRC)/src/game/game_parsed.c \
+	$(OOM_SRC)/src/game/game_planet.c \
+	$(OOM_SRC)/src/game/game_save.c \
+	$(OOM_SRC)/src/game/game_save_moo13.c \
+	$(OOM_SRC)/src/game/game_shipdesign.c \
+	$(OOM_SRC)/src/game/game_shiptech.c \
+	$(OOM_SRC)/src/game/game_spy.c \
+	$(OOM_SRC)/src/game/game_stat.c \
+	$(OOM_SRC)/src/game/game_str.c \
+	$(OOM_SRC)/src/game/game_str_shipnames.c \
+	$(OOM_SRC)/src/game/game_strp.c \
+	$(OOM_SRC)/src/game/game_tech.c \
+	$(OOM_SRC)/src/game/game_turn.c \
+	$(OOM_SRC)/src/game/game_turn_start.c
+
+# --- Classic UI (src/ui/classic/) ---
+UI_SRCS = \
+	$(OOM_SRC)/src/ui/classic/uiaudience.c \
+	$(OOM_SRC)/src/ui/classic/uibasescrap.c \
+	$(OOM_SRC)/src/ui/classic/uibattle.c \
+	$(OOM_SRC)/src/ui/classic/uibattlepre.c \
+	$(OOM_SRC)/src/ui/classic/uibomb.c \
+	$(OOM_SRC)/src/ui/classic/uicaught.c \
+	$(OOM_SRC)/src/ui/classic/uiclassic.c \
+	$(OOM_SRC)/src/ui/classic/uicopyprotection.c \
+	$(OOM_SRC)/src/ui/classic/uicursor.c \
+	$(OOM_SRC)/src/ui/classic/uidelay.c \
+	$(OOM_SRC)/src/ui/classic/uidesign.c \
+	$(OOM_SRC)/src/ui/classic/uidialog.c \
+	$(OOM_SRC)/src/ui/classic/uidraw.c \
+	$(OOM_SRC)/src/ui/classic/uielection.c \
+	$(OOM_SRC)/src/ui/classic/uiempirereport.c \
+	$(OOM_SRC)/src/ui/classic/uiempirestatus.c \
+	$(OOM_SRC)/src/ui/classic/uiending.c \
+	$(OOM_SRC)/src/ui/classic/uiexplore.c \
+	$(OOM_SRC)/src/ui/classic/uifleet.c \
+	$(OOM_SRC)/src/ui/classic/uigame.c \
+	$(OOM_SRC)/src/ui/classic/uigameopts.c \
+	$(OOM_SRC)/src/ui/classic/uigmap.c \
+	$(OOM_SRC)/src/ui/classic/uiground.c \
+	$(OOM_SRC)/src/ui/classic/uihelp.c \
+	$(OOM_SRC)/src/ui/classic/uiintro.c \
+	$(OOM_SRC)/src/ui/classic/uilanding.c \
+	$(OOM_SRC)/src/ui/classic/uiload.c \
+	$(OOM_SRC)/src/ui/classic/uimainmenu.c \
+	$(OOM_SRC)/src/ui/classic/uinewgame.c \
+	$(OOM_SRC)/src/ui/classic/uinews.c \
+	$(OOM_SRC)/src/ui/classic/uinewships.c \
+	$(OOM_SRC)/src/ui/classic/uinewtech.c \
+	$(OOM_SRC)/src/ui/classic/uiobj.c \
+	$(OOM_SRC)/src/ui/classic/uipal.c \
+	$(OOM_SRC)/src/ui/classic/uiplanets.c \
+	$(OOM_SRC)/src/ui/classic/uiraces.c \
+	$(OOM_SRC)/src/ui/classic/uisave.c \
+	$(OOM_SRC)/src/ui/classic/uisearch.c \
+	$(OOM_SRC)/src/ui/classic/uisound.c \
+	$(OOM_SRC)/src/ui/classic/uispecs.c \
+	$(OOM_SRC)/src/ui/classic/uispy_esp.c \
+	$(OOM_SRC)/src/ui/classic/uispy_sab.c \
+	$(OOM_SRC)/src/ui/classic/uistarmap.c \
+	$(OOM_SRC)/src/ui/classic/uistarmap_common.c \
+	$(OOM_SRC)/src/ui/classic/uistarmap_enroute.c \
+	$(OOM_SRC)/src/ui/classic/uistarmap_orbit_en.c \
+	$(OOM_SRC)/src/ui/classic/uistarmap_orbit_own.c \
+	$(OOM_SRC)/src/ui/classic/uistarmap_reloc.c \
+	$(OOM_SRC)/src/ui/classic/uistarmap_ships.c \
+	$(OOM_SRC)/src/ui/classic/uistarmap_trans.c \
+	$(OOM_SRC)/src/ui/classic/uistarmap_transport.c \
+	$(OOM_SRC)/src/ui/classic/uistarview.c \
+	$(OOM_SRC)/src/ui/classic/uiswitch.c \
+	$(OOM_SRC)/src/ui/classic/uitech.c \
+	$(OOM_SRC)/src/ui/classic/uiturn.c
+
+# --- SDL2 HW backend (src/hw/sdl/2/) ---
+# Note: these #include the shared hwsdl*.c files from src/hw/sdl/
+HW_SRCS = \
+	$(OOM_SRC)/src/hw/sdl/2/hwsdl2.c \
+	$(OOM_SRC)/src/hw/sdl/2/hwsdl2_audio.c \
+	$(OOM_SRC)/src/hw/sdl/2/hwsdl2_mouse.c \
+	$(OOM_SRC)/src/hw/sdl/2/hwsdl2_opt.c \
+	patches/hwsdl2_video.c
+
+# --- AmigaOS platform layer ---
+OS_SRCS = amiga/os.c
+
+ALL_SRCS = $(CORE_SRCS) $(GAME_SRCS) $(UI_SRCS) $(HW_SRCS) $(OS_SRCS)
+ALL_OBJS = $(patsubst %.c,%.o,$(ALL_SRCS))
+
+TARGET = 1oom_classic_sdl2
+
+.PHONY: 1oom 1oom-native clean
+
+# Docker build (default)
+1oom:
+	docker run --rm \
+		-v "$(SDL2_ROOT):/sdl2" \
+		-v "$(PWD)/..:/ports" \
+		-w /ports/1oom \
+		$(DOCKER_IMAGE) \
+		make -f Makefile.amiga 1oom-native \
+			OOM_SRC=/ports/1oom-upstream \
+			SDL2_ROOT=/sdl2
+
+# Native cross-compile
+1oom-native: $(TARGET)
+	@echo "Built $(TARGET) ($$(wc -c < $(TARGET)) bytes)"
+
+$(TARGET): $(ALL_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(TARGET)
+	find . -name '*.o' -delete
+	-find $(OOM_SRC) -name '*.o' -delete 2>/dev/null
