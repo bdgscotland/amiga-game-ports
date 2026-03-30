@@ -157,7 +157,7 @@ UI_SRCS = \
 # --- SDL2 HW backend (src/hw/sdl/2/) ---
 # Note: these #include the shared hwsdl*.c files from src/hw/sdl/
 HW_SRCS = \
-	$(OOM_SRC)/src/hw/sdl/2/hwsdl2.c \
+	patches/hwsdl2.c \
 	$(OOM_SRC)/src/hw/sdl/2/hwsdl2_audio.c \
 	$(OOM_SRC)/src/hw/sdl/2/hwsdl2_mouse.c \
 	$(OOM_SRC)/src/hw/sdl/2/hwsdl2_opt.c \
