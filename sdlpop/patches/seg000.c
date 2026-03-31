@@ -168,32 +168,37 @@ byte* level_var_palettes;
 
 // seg000:024F
 void init_game_main() {
+	SDL_Log("POP: init_game_main: start");
 	doorlink1_ad = /*&*/level.doorlinks1;
 	doorlink2_ad = /*&*/level.doorlinks2;
 	prandom(1);
 	if (graphics_mode == gmMcgaVga) {
-		// Guard palettes
 		guard_palettes = (byte*) load_from_opendats_alloc(10, "bin", NULL, NULL);
-		// (blood, hurt flash) #E00030 = red
 		set_pal(12, 0x38, 0x00, 0x0C);
-		// (palace wall pattern) #C09850 = light brown
 		set_pal( 6, 0x30, 0x26, 0x14);
-
-		// Level color variations (1.3)
 		level_var_palettes = load_from_opendats_alloc(20, "bin", NULL, NULL);
 	}
-	// PRINCE.DAT: sword
+	SDL_Log("POP: loading sword sprites");
 	chtab_addrs[id_chtab_0_sword] = load_sprites_from_file(700, 1<<2, 1);
-	// PRINCE.DAT: flame, sword on floor, potion
+	SDL_Log("POP: loading flame/potion sprites");
 	chtab_addrs[id_chtab_1_flameswordpotion] = load_sprites_from_file(150, 1<<3, 1);
+	SDL_Log("POP: sprites loaded, closing dat");
 	close_dat(dathandle);
 #ifdef USE_LIGHTING
+	SDL_Log("POP: init_lighting");
 	init_lighting();
 #endif
+#ifdef __AMIGAOS3__
+	SDL_Log("POP: skipping load_all_sounds (no audio yet)");
+#else
+	SDL_Log("POP: load_all_sounds");
 	load_all_sounds();
-
+#endif
+	SDL_Log("POP: hof_read");
 	hof_read();
-	show_splash(); // added
+	SDL_Log("POP: show_splash");
+	show_splash();
+	SDL_Log("POP: start_game");
 	start_game();
 }
 

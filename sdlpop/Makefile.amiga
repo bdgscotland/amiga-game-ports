@@ -11,7 +11,8 @@ CFLAGS = -std=gnu99 -O2 -m68020 -noixemul \
          -I$(POP_SRC) \
          -D__AMIGAOS3__ \
          -DUSE_COMPAT_TIMER \
-         -Dfps=BASE_FPS
+         -Dfps=BASE_FPS \
+         -DDISABLE_SOUND
 
 LDFLAGS = -noixemul -m68020 \
           -L$(SDL2_ROOT) -lSDL2 \

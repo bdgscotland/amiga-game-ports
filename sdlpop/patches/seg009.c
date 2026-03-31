@@ -3751,6 +3751,13 @@ void process_events() {
 			case SDL_USEREVENT:
 				if (event.user.code == userevent_TIMER /*&& event.user.data1 == (void*)timer_index*/) {
 #ifdef USE_COMPAT_TIMER
+					{
+						static int ue_count = 0;
+						if (ue_count < 5) {
+							SDL_Log("POP: got USEREVENT_TIMER in process_events #%d", ue_count);
+						}
+						ue_count++;
+					}
 					for (int index = 0; index < NUM_TIMERS; ++index) {
 						if (wait_time[index] > 0) --wait_time[index];
 					}
@@ -3806,6 +3813,13 @@ void do_simple_wait(int timer_index) {
 	if ((replaying && skipping_replay) || is_validate_mode) return;
 #endif
 	update_screen();
+	{
+		static int dsw_count = 0;
+		if (dsw_count < 3) {
+			SDL_Log("POP: do_simple_wait(%d) wait_time=%d", timer_index, wait_time[timer_index]);
+		}
+		dsw_count++;
+	}
 	while (! has_timer_stopped(timer_index)) {
 		SDL_Delay(1);
 		process_events();
