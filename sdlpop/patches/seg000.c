@@ -198,7 +198,9 @@ void init_game_main() {
 	hof_read();
 	SDL_Log("POP: show_splash");
 	show_splash();
-	SDL_Log("POP: start_game");
+	SDL_Log("POP: start_game (skip_title)");
+	custom->skip_title = 1;
+	start_level = custom->first_level;
 	start_game();
 }
 

@@ -10,10 +10,11 @@
 
 | Game | Status | Original Platform | Notes |
 |------|--------|-------------------|-------|
-| **[1oom](1oom/)** (Master of Orion) | Running | DOS (1993) | 4X strategy classic. Zero source mods, ~43 FPS. |
-| **[Julius](julius/)** (Caesar III) | Running | Windows (1998) | Never on classic Amiga. 360 files, 1 source fix. |
-| **[Celeste Classic](ccleste/)** | Running | PICO-8 (2018) | First new game on classic 68k Amiga. |
-| **[Chocolate Doom](chocolate-doom/)** | Running | DOS (1993) | With WAV sound effects via SDL2_mixer. |
+| **[1oom](1oom/)** (Master of Orion) | Playable | DOS (1993) | 4X strategy classic. Zero source mods, ~43 FPS. No audio. |
+| **[SDLPoP](sdlpop/)** (Prince of Persia) | WIP | DOS (1989) | Renders at ~35 FPS. Keyboard input broken. No audio. |
+| **[Julius](julius/)** (Caesar III) | Playable | Windows (1998) | Never on classic Amiga. 360 files, 1 source fix. No audio. |
+| **[Celeste Classic](ccleste/)** | Playable | PICO-8 (2018) | First new game on classic 68k Amiga. No audio. |
+| **[Chocolate Doom](chocolate-doom/)** | Playable | DOS (1993) | With WAV sound effects via SDL2_mixer. |
 
 ## Requirements
 

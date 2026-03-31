@@ -3439,6 +3439,13 @@ void process_events() {
 	while (SDL_PollEvent(&event) == 1) { // while there are still events to be processed
 		switch (event.type) {
 			case SDL_KEYDOWN:
+				{
+					static int kd_count = 0;
+					if (kd_count < 5) {
+						SDL_Log("POP: KEYDOWN scancode=%d sym=%d", (int)event.key.keysym.scancode, (int)event.key.keysym.sym);
+					}
+					kd_count++;
+				}
 			{
 				int modifier = event.key.keysym.mod;
 				int scancode = event.key.keysym.scancode;
