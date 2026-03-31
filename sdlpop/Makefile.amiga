@@ -64,6 +64,7 @@ patch-sources:
 	cp patches/seg000.c $(POP_SRC)/seg000.c
 	cp patches/data.h $(POP_SRC)/data.h
 	cp patches/stb_image.h $(POP_SRC)/stb_image.h
+	cp patches/seg009.c $(POP_SRC)/seg009.c
 	@echo "Built $(TARGET) ($$(wc -c < $(TARGET)) bytes)"
 
 $(TARGET): $(OBJS)
