@@ -145,7 +145,8 @@ COMMON_VIDEO = \
   $(UPSTREAM)/common/framelimit.cpp \
   $(UPSTREAM)/common/gbuffer.cpp \
   $(UPSTREAM)/common/interpal.cpp \
-  $(UPSTREAM)/common/soundio_null.cpp \
+  $(UPSTREAM)/common/soundio_common.cpp \
+  $(UPSTREAM)/common/soundio_sdl2.cpp \
   $(UPSTREAM)/common/vqaaudio_null.cpp \
   $(UPSTREAM)/common/video_sdl2.cpp \
   $(UPSTREAM)/common/wwkeyboard.cpp \
